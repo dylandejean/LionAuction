@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title></title>
+</head>
+<body>
+<div class="container-sm">
+    <div class="card-body">
+        <button class="btn btn-primary", onclick="window.location.href='/'">Logout</button>
+    </div>
+</div>
+<div class="container-sm">
+    <div class="card-body">
+        <button class="btn btn-success", onclick="window.location.href='/check_permissions_back'">Back</button>
+    </div>
+</div>
+<div class="container-sm">
+    <div class="card-body">
+        <h2 class="card-title">Auction Information:</h2>
+        <table class="table table-dark">
+            <tr>
+                <th scope="col"> Listing ID </th>
+                <th scope="col"> Category</th>
+                <th scope="col"> Auction Title</th>
+                <th scope="col"> Product Name</th>
+                <th scope="col"> Number of Bids</th>
+                <th scope="col"> Highest Bid</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td> {{ auction['listing_id'] }} </td>
+                    <td> {{ auction['category'] }} </td>
+                    <td> {{ auction['auction_title'] }} </td>
+                    <td> {{ auction['product_name'] }} </td>
+                    <td> {{ auction['current_bids'] }} </td>
+                    <td> {{ auction['highest_bid'] }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<div>
+    <form id="edit_auction" action="/edit_auction/{{ auction['listing_id'] }}" method="POST">
+    <div class="form-group">
+        <label for="edit_title">Edit auction title:</label>
+        <input type="text" name="auction_title" size="30" required class="form-control"><br>
+        <label for="edit_name">Edit product name:</label>
+        <input type="text" name="product_name" size="30" required class="form-control"><br>
+        <label for="edit_desc">Edit product description:</label>
+        <input type="text" name="product_desc" size="30" required class="form-control"><br>
+        <label for="edit_reserve">Edit reserve price:</label>
+        <input type="number" name="reserve_price" size="30" required class="form-control"><br>
+        </div>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmModal">Submit</button>
+    </form>
+</div>
+<div>
+    <h2 class="card-title">Auction Removal:</h2>
+    <form id="delete_auction" action="/delete_auction/{{ auction['listing_id'] }}" method="POST">
+        <label for="edit_title">Reason for removal:</label>
+        <input type="text" name="removal_reason" required class="form-control">
+        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#deleteModal">Remove listing</button>
+    </form>
+</div>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+<!-- modal: used reference from https://getbootstrap.com/docs/4.0/components/modal/ but changed
+ the 'confirm' button type to 'submit' and referenced the form id-->
+<div class="modal" id="confirmModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Confirmation</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you'd like to edit this listing?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" form="edit_auction">Confirm</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="deleteModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Remove listing confirmation</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you'd like to remove this listing?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-secondary" form="delete_auction">Confirm</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
